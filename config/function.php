@@ -143,3 +143,9 @@ function checkParamId($type){
        
     }
 }
+
+function logoutSession(){
+    unset($_SESSION['loggedIn']);
+    unset($_SESSION['loggedInUser']);
+   
+}
