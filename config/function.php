@@ -94,7 +94,7 @@ function getById($tableName, $id)
 
     if ($result) {
         if (mysqli_num_rows($result) == 1) {
-           
+
             $row = mysqli_fetch_assoc($result);
             $response = [
                 'status' => 200,
@@ -102,7 +102,6 @@ function getById($tableName, $id)
                 'message' => 'Record Found'
             ];
             return $response;
-
         } else {
             $response = [
                 'status' => 404,
@@ -120,32 +119,43 @@ function getById($tableName, $id)
 }
 
 // Delete data From database using id
-function delete($tableName, $id){
+function delete($tableName, $id)
+{
     global $conn;
     $table = validate($tableName);
     $id = validate($id);
 
     $query = "DELETE FROM $table WHERE id='$id' LIMIT 1";
-    $result = mysqli_query($conn,$query);
+    $result = mysqli_query($conn, $query);
     return $result;
 }
 
-function checkParamId($type){
+function checkParamId($type)
+{
     if (isset($_GET[$type])) {
         if ($_GET[$type] != '') {
             return $_GET[$type];
         } else {
             echo '<h5>No Id Found</h5>';
-            
         }
     } else {
         echo '<h5>No Id given </h5>';
-       
     }
 }
 
-function logoutSession(){
+function logoutSession()
+{
     unset($_SESSION['loggedIn']);
     unset($_SESSION['loggedInUser']);
-   
+}
+
+function jsonResponse($status, $status_type, $message)
+{
+    $response = [
+        'status' => $status,
+        'status_type' => $status_type,
+        'message' => $message
+    ];
+    echo json_encode($response);
+    return;
 }
