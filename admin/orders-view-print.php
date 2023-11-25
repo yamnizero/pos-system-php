@@ -9,6 +9,9 @@
             </h4>
         </div>
         <div class="card-body">
+
+
+
             <div id="mybillingArea">
                 <?php
                 if (isset($_GET['track'])) {
@@ -54,7 +57,7 @@
                                     </td>
                                     <td align="end">
                                         <h5 style="font-size: 20px; line-height: 30px; margin: 0px;padding: 0;">Invoice Details</h5>
-                                        <p style="font-size: 14px; line-height: 20px;margin: 0px;padding: 0;">Invoice No: <?= $orderDataRow['tracking_no'] ?></p>
+                                        <p style="font-size: 14px; line-height: 20px;margin: 0px;padding: 0;">Invoice No: <?= $orderDataRow['invoice_no'] ?></p>
                                         <p style="font-size: 14px; line-height: 20px;margin: 0px;padding: 0;">Invoice Date: <?= date('d M Y') ?></p>
                                         <p style="font-size: 14px; line-height: 20px;margin: 0px;padding: 0;">Address: 1st, aldis, yemen</p>
                                     </td>
@@ -134,8 +137,12 @@
                 }
                 ?>
             </div>
+            <div class="mat-4 text-end">
+                <button class="btn btn-info px-4 mx-1" onclick="printMybillingArea()">Print</button>
+                <button class="btn btn-primary px-4 mx-1" onclick="downloadPDF('<?= $orderDataRow['invoice_no'] ?>')">Download PDF</button>
+            </div>
 
-        </div>
+        </div>  
 
     </div>
 </div>

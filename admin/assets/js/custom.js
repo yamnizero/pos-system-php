@@ -191,3 +191,31 @@ $(document).ready(function () {
         });
     });
 });
+
+function  printMybillingArea(){
+    var divContents = document.getElementById("mybillingArea").innerHTML;
+    var a = window.open('', '');
+    a.document.write('<html><title>POS System in PHP</title>');
+    a.document.write('<body style="font-family: fangsong;">');
+    a.document.write(divContents);
+    a.document.write('</body></html>');
+    a.document.close();
+    a.print();
+}
+
+//PDF 
+window.jsPDF = window.jspdf.jsPDF;
+var docPDF = new jsPDF();
+
+function downloadPDF(invoiceNo){
+    var elementHTML = document.querySelector("#mybillingArea");
+    docPDF.html(elementHTML, {
+        callback:function(){
+            docPDF.save(invoiceNo+'.pdf');
+        },
+        x:15,
+        y:15,
+        width:170,
+        windowWidth:650
+    });
+}
