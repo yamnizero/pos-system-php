@@ -42,6 +42,7 @@
                                     <td><?= $item['name'] ?></td>
 
                                     <td>
+                                        <!--  -->
                                         <?php
                                         if ($item['status'] == 1) {
                                             echo '<span class="badge bg-danger">Hidden</span>';
