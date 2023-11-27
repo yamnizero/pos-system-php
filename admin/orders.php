@@ -12,21 +12,36 @@
                 <div class="col-md-8">
                     <form action="" method="GET">
                         <div class="row g-1">
-                            <div class="col-md-4">
+                            <div class="col-md-4" >
                                 <input type="date"
                                 class="form-control"
                                 name="date" value="<?= isset($_GET['date']) == true ? $_GET['date'] : '' ?>">
                             </div>
                             <div class="col-md-4">
                                 <select name="payment_status"  class="form-control">
-                                <option value="cash_payment">Select Payment Status</option>
-                                <option value="cash_payment">Cash Payment</option>
-                                <option value="online_payment">Online Payment</option>
+                                <option value="">Select Payment Status</option>
+                                <option
+                                 value="Cash Payment"
+                                <?= 
+                                isset($_GET['payment_status']) == true
+                                ?
+                                ($_GET['payment_status'] == 'Cash Payment' ? 'selected':'')
+                                : '' ;
+                                ?>
+                                >Cash Payment</option>
+                                <option value="Online Payment"
+                                <?= 
+                                isset($_GET['payment_status']) == true
+                                ?
+                                ($_GET['payment_status'] == 'Online Payment' ? 'selected':'')
+                                : '' ;
+                                ?>
+                                >Online Payment</option>
 
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <button class="btn btn-primary">Filter</button>
+                                <button type="submit" class="btn btn-primary">Filter</button>
                                 <a href="orders.php" class="btn btn-danger">Reset</a>
                            </div>
                         </div>
@@ -36,7 +51,28 @@
         </div>
         <div class="card-body">
             <?php
-            $query = "SELECT o.*,c.* FROM orders o, customers c WHERE c.id = o.customer_id ORDER BY o.id DESC";
+                if (isset($_GET['date']) || isset($_GET['payment_status']) ) {
+                   $orderDate = validate(isset($_GET['date']));
+                   $paymentStatus = validate(isset($_GET['payment_status']));
+
+                   if ( $orderDate != '' && $paymentStatus =='' ) {
+                    $query = "SELECT o.*,c.* FROM orders o, customers c WHERE c.id = o.customer_id AND o.order_date='$orderDate' ORDER BY o.id DESC";
+                   }elseif($orderDate == '' && $paymentStatus !='' ){
+                    $query = "SELECT o.*,c.* FROM orders o, customers c WHERE c.id = o.customer_id AND o.payment_mode='$$paymentStatus' ORDER BY o.id DESC";
+                   }elseif( $orderDate != '' && $paymentStatus !=''){
+                    $query = "SELECT o.*,c.* FROM orders o, customers c WHERE c.id = o.customer_id  AND o.order_date='$orderDate' AND o.payment_mode='$$paymentStatus' ORDER BY o.id DESC";
+
+                   }else{
+                    $query = "SELECT o.*,c.* FROM orders o, customers c WHERE c.id = o.customer_id ORDER BY o.id DESC";
+
+                   }
+
+
+                } else {
+                    $query = "SELECT o.*,c.* FROM orders o, customers c WHERE c.id = o.customer_id ORDER BY o.id DESC";
+
+                }
+                
             $orders = mysqli_query($conn, $query);
             if ($orders) {
                 if (mysqli_num_rows($orders) > 0) {
